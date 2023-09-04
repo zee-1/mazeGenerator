@@ -8,6 +8,7 @@
 
 using Maze::MazeGen;
 
+//;=================== MazeGen(int)==================
 MazeGen::MazeGen(const unsigned int size):size(size),target({(unsigned int)(rand()%this->size),(unsigned int)(rand()%this->size)}){
 #ifndef NDEBUG
       std::cerr<<"[LOG]: From "<<__func__<<" initiated with parameters-> size:"<<this->size<<std::endl;
@@ -19,6 +20,8 @@ MazeGen::MazeGen(const unsigned int size):size(size),target({(unsigned int)(rand
 #endif
 }
 
+
+//;================= MazeGen(Position,int)===========
 MazeGen::MazeGen(Maze::Position pos, const unsigned int size):size(size),target(pos){
 #ifndef NDEBUG
       std::cerr<<"[LOG]: From "<<__func__<<" initiated with parameters-> size:"<<this->size<<", Position ->"<<pos.x<<','<<pos.y<<std::endl;
@@ -36,6 +39,8 @@ MazeGen::MazeGen(Maze::Position pos, const unsigned int size):size(size),target(
 #endif
 }
 
+
+//;================ _initMaze()===================
 void MazeGen::_initMaze(){
 #ifndef NDEBUG
       std::cerr<<"[LOG]: From "<<__func__<<" initiated with parameters->size:"<<this->size<<", target:"<<target<<std::endl;
@@ -57,6 +62,8 @@ void MazeGen::_initMaze(){
 #endif
 }
 
+
+//;=============== ShowMaze()====================
 void MazeGen::ShowMaze(){
 #ifndef NDEBUG
       std::cerr<<"[LOG]: From "<<__func__<<" Initiated"<<std::endl;
@@ -72,6 +79,8 @@ void MazeGen::ShowMaze(){
 #endif
 }
 
+
+//;============= createMaze()===================
 void MazeGen::createMaze(){
       Position curr = {0,0};
 
@@ -84,9 +93,10 @@ std::cerr<<"[LOG]: From "<<__func__<<", Starting to create maze..."<<std::endl;
 
             int whereToMove = distribution(generator);
             auto newPos = moveCursor(curr,whereToMove);
-            if(0<=newPos.x<this->size and 0<=newPos.y<this->size)
+            if(0<=newPos.x<this->size and 0<=newPos.y<this->size){
                   curr = newPos;
                   this->operator[](curr) = ' ';
+            }
             if (curr==target) break;
       }
 #ifndef NDEBUG
@@ -94,6 +104,8 @@ std::cerr<<"[LOG]: From "<<__func__<<", Maze Created succesfully"<<std::endl;
 #endif
 }
 
+
+//;============== moveCursor(Position,int)======
 Maze::Position Maze::moveCursor(Maze::Position p,int x){
 /*
 : 0== UP
@@ -116,11 +128,15 @@ if(x==0){
 return p;
 }
 
+
+//;====================== MazeGen::operator[]==============
 char &MazeGen::operator[](Maze::Position p){
       return this->_MAZE[p.x][p.y];
 }
 
-std::ostream& operator<<(std::ostream& os,Maze::Position p){
+
+//;====================== MazeGen::operator<< ==============
+std::ostream& Maze::operator<<(std::ostream& os,Maze::Position p){
       os<<'{'<<p.x<<','<<p.y<<'}';
       return os;
 }
