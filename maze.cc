@@ -27,7 +27,7 @@ MazeGen::MazeGen(Maze::Position pos, const unsigned int size):size(size),target(
       std::cerr<<"[LOG]: From "<<__func__<<" initiated with parameters-> size:"<<this->size<<", Position ->"<<pos.x<<','<<pos.y<<std::endl;
 #endif
       
-      if(pos.x<0 or pos.x>this->size or pos.y<0 or pos.y>this->size){
+      if(pos.x<0 or pos.x>=this->size or pos.y<0 or pos.y>=this->size){
             std::cerr<<"[ERROR]: From "<<__func__<<" Invalid Postion given {"<<pos.x<<','<<pos.y<<'}'<<std::endl;
             exit(1);
       }
@@ -92,10 +92,13 @@ std::cerr<<"[LOG]: From "<<__func__<<", Starting to create maze..."<<std::endl;
       while(curr!=target){
 
             int whereToMove = distribution(generator);
-            auto newPos = moveCursor(curr,whereToMove);
-            if(0<=newPos.x<this->size and 0<=newPos.y<this->size){
+            auto newPos = Findmove(curr,whereToMove);
+            if(0<=newPos.x and newPos.x<this->size and 0<=newPos.y and newPos.y<this->size){
                   curr = newPos;
                   this->operator[](curr) = ' ';
+                  #ifndef NVERBOSE
+                  std::cout<<"Current Position:"<<curr<<std::endl;
+                  #endif
             }
             if (curr==target) break;
       }
@@ -106,7 +109,7 @@ std::cerr<<"[LOG]: From "<<__func__<<", Maze Created succesfully"<<std::endl;
 
 
 //;============== moveCursor(Position,int)======
-Maze::Position Maze::moveCursor(Maze::Position p,int x){
+Maze::Position Maze::Findmove(Maze::Position p,int x){
 /*
 : 0== UP
 : 1== DOWN
@@ -114,13 +117,13 @@ Maze::Position Maze::moveCursor(Maze::Position p,int x){
 : 3== RIGHT
 */
 if(x==0){
-      p.y+=1;
+      p.y+=2;
 }else if(x==1){
-      p.y-=1;
+      p.y-=2;
 }else if(x==2){
-      p.x-=1;
+      p.x-=2;
 }else if(x==3){
-      p.x+=1;
+      p.x+=2;
 }else{
       std::cerr<<"[ERROR] From "<<__func__<<" Invalid Move {"<<x<<"}. Must be in Range 0<=x<=3."<<std::endl;
       exit(1);
@@ -131,7 +134,8 @@ return p;
 
 //;====================== MazeGen::operator[]==============
 char &MazeGen::operator[](Maze::Position p){
-      return this->_MAZE[p.x][p.y];
+      auto &ref = (this->_MAZE[p.x][p.y]);
+      return ref;
 }
 
 

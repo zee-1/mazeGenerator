@@ -5,7 +5,7 @@ using Maze::MazeGen;
 
 int main(int argc, char const *argv[])
 {
-      Maze::Position p{1,10};
+      Maze::Position p{2,8};
       MazeGen m(p,10);
 
       m.createMaze();

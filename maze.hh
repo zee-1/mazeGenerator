@@ -9,7 +9,7 @@ namespace Maze
       {   int x,y;
             Position() = default;
             inline Position(unsigned int x,unsigned int y){this->x=x;this->y=y;};
-            bool operator==(Position p2){ return (this->x==p2.x and this->y==this->y);};
+            bool operator==(Position p2){ return (this->x==p2.x and this->y==p2.y);};
             bool operator!=(Position p2){ return !(*this==p2);};
       };
       
@@ -30,7 +30,7 @@ namespace Maze
                   void _initMaze();
 
 };
-Maze::Position moveCursor(Maze::Position p,int x);
+Maze::Position Findmove(Maze::Position p,int x);
 std::ostream& operator<<(std::ostream&,Position);
 } // namespace Maze
 #endif
