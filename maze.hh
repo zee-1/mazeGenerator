@@ -23,6 +23,7 @@ namespace Maze
                   void ShowMaze();
                   void createMaze();
                   char& operator[](Position);
+                  void makeMove(Position curr,Position new_);
             private:
                   const unsigned int size;
                   const Position target;
@@ -30,7 +31,7 @@ namespace Maze
                   void _initMaze();
 
 };
-Maze::Position Findmove(Maze::Position p,int x);
+Maze::Position findMove(Maze::Position p,int x);
 std::ostream& operator<<(std::ostream&,Position);
 } // namespace Maze
 #endif

@@ -92,7 +92,7 @@ std::cerr<<"[LOG]: From "<<__func__<<", Starting to create maze..."<<std::endl;
       while(curr!=target){
 
             int whereToMove = distribution(generator);
-            auto newPos = Findmove(curr,whereToMove);
+            auto newPos = findMove(curr,whereToMove);
             if(0<=newPos.x and newPos.x<this->size and 0<=newPos.y and newPos.y<this->size){
                   curr = newPos;
                   this->operator[](curr) = ' ';
@@ -109,7 +109,7 @@ std::cerr<<"[LOG]: From "<<__func__<<", Maze Created succesfully"<<std::endl;
 
 
 //;============== moveCursor(Position,int)======
-Maze::Position Maze::Findmove(Maze::Position p,int x){
+Maze::Position Maze::findMove(Maze::Position p,int x){
 /*
 : 0== UP
 : 1== DOWN
@@ -145,3 +145,17 @@ std::ostream& Maze::operator<<(std::ostream& os,Maze::Position p){
       return os;
 }
 
+//;===================== MazeGen::makeMove(Position,Position)==
+void MazeGen::makeMove(Maze::Position curr,Maze::Position new_){
+      if(!(curr.x-new_.x)){
+            for(int i=curr.y;i<=new_.y;i++){
+                  this->_MAZE[curr.x][i]=' ';
+            }
+      }else if(!(curr.y-new_.y)){
+            for(int i=curr.x;i<=new_.x;i++){
+                  this->_MAZE[i][curr.y]=' ';
+            }
+      }else{
+            std::cerr<<"[ERROR]: From "<<__func__<<" Invalid move"<<new_<<". \nMove must be in 1 direction."<<std::endl;
+      }
+}
