@@ -82,26 +82,42 @@ void MazeGen::ShowMaze(){
 
 //;============= createMaze()===================
 void MazeGen::createMaze(){
-      Position curr = {0,0};
 
-      std::default_random_engine generator;
-      std::discrete_distribution<int> distribution {1,3,1,3};
+      std::default_random_engine generator(time(0));
 #ifndef NDEBUG
 std::cerr<<"[LOG]: From "<<__func__<<", Starting to create maze..."<<std::endl;
 #endif
-      while(curr!=target){
 
-            int whereToMove = distribution(generator);
-            auto newPos = findMove(curr,whereToMove);
-            if(0<=newPos.x and newPos.x<this->size and 0<=newPos.y and newPos.y<this->size){
-                  curr = newPos;
-                  this->operator[](curr) = ' ';
-                  #ifndef NVERBOSE
-                  std::cout<<"Current Position:"<<curr<<std::endl;
-                  #endif
+      Position pos[] = {{1,1},{1,this->size-2},{this->size-2,1},{this->size-2,this->size-2},{}};
+      for(ushort i=0; i<4;i++){
+
+            auto curr = pos[i];
+            unsigned short moveDecider = 0;
+            auto moveCounter = this->size/2;
+            unsigned int moveWeightage[4] = {moveCounter,moveCounter,moveCounter,moveCounter};
+            while(moveCounter){
+
+                  int whereToMove[4];
+                  std::discrete_distribution<int> distribution {3,6,1,6};
+                  for(int i=0;i<4;i++)
+                  whereToMove[i] = distribution(generator);
+
+                  auto newPos = findMove(curr,whereToMove[moveDecider]);
+                  if(0<newPos.x and newPos.x<this->size-1 and 0<newPos.y and newPos.y<this->size-1){
+                        if(this->operator[](newPos)==' ') moveDecider++;
+                        this->makeMove(curr,newPos);
+                        moveWeightage[whereToMove[moveDecider]]--;
+                        moveCounter--;
+                        curr = newPos;
+                        moveDecider=rand()%4;
+                        #ifndef NVERBOSE
+                        std::cout<<"Current Position:"<<curr<<std::endl;
+                        #endif
+                  }
+                  if (curr==target) continue;
             }
-            if (curr==target) break;
       }
+      this->operator[](target)='X';
 #ifndef NDEBUG
 std::cerr<<"[LOG]: From "<<__func__<<", Maze Created succesfully"<<std::endl;
 #endif
@@ -148,11 +164,15 @@ std::ostream& Maze::operator<<(std::ostream& os,Maze::Position p){
 //;===================== MazeGen::makeMove(Position,Position)==
 void MazeGen::makeMove(Maze::Position curr,Maze::Position new_){
       if(!(curr.x-new_.x)){
-            for(int i=curr.y;i<=new_.y;i++){
+            auto start = std::min(curr.y,new_.y),
+                   end = std::max(curr.y,new_.y);
+            for(int i=start;i<=end;i++){
                   this->_MAZE[curr.x][i]=' ';
             }
       }else if(!(curr.y-new_.y)){
-            for(int i=curr.x;i<=new_.x;i++){
+            auto start = std::min(curr.x,new_.x),
+                   end = std::max(curr.x,new_.x);
+            for(int i=start;i<=end;i++){
                   this->_MAZE[i][curr.y]=' ';
             }
       }else{
