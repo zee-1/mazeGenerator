@@ -1,16 +1,20 @@
 #ifndef MAZE_H
 #define MAZE_H
 
+#include <random>
 #include <vector>
 #include <iostream>
+#include <initializer_list>
 namespace Maze
 {
       struct Position
-      {   int x,y;
+      {
+            int x,y;
             Position() = default;
-            inline Position(unsigned int x,unsigned int y){this->x=x;this->y=y;};
+            inline Position(unsigned int x,unsigned int y){this->x=x;this->y=y;};            
             bool operator==(Position p2){ return (this->x==p2.x and this->y==p2.y);};
             bool operator!=(Position p2){ return !(*this==p2);};
+            void operator=(std::initializer_list<int>& p);
       };
       
       class MazeGen{
@@ -21,14 +25,14 @@ namespace Maze
 
 
                   void ShowMaze();
-                  void createMaze();
                   char& operator[](Position);
-                  void makeMove(Position curr,Position new_);
+                  void createMaze();
             private:
                   const unsigned int size;
                   const Position target;
                   char **_MAZE;
                   void _initMaze();
+                  void makeMove(Position curr,Position new_);
 
 };
 Maze::Position findMove(Maze::Position p,int x);
