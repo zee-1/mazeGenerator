@@ -6,15 +6,16 @@
 #include <exception>
 #include <initializer_list>
 
-std::string LogLevel[3] = {"[LOG]","[WARNING]","[ERROR]"};
+std::string LogLevel[3] = {"\x1B[7;97;32m[LOG]\x1B[0m","\x1B[7;97;33m[WARNING]\x1B[0m","\x1B[7;97;31m[ERROR]\x1B[0m"};
 
 #define log(level,message) std::cerr<<LogLevel[level-1]<<" From "<<__func__<<message<<std::endl;
-
+#define asterisk "\x1B[7;30m*\x1B[0m"
+#define space "\x1B[7;97m \x1B[0m"
+#define targ "\x1B[0;34mX\x1B[0m"
 using Maze::MazeGen;
 ;
 //;=================== MazeGen(int)==================
 MazeGen::MazeGen(const unsigned int size):size(size),target({(unsigned int)(rand()%this->size+1),(unsigned int)(rand()%this->size+1)}){
-
 #ifndef NDEBUG
       log(2,"Initalizing with default settings")
       log(1," initialized with Paramerters: size->"<<size<<",target->"<<target)
@@ -87,7 +88,16 @@ void MazeGen::ShowMaze(){
 #endif
       for(int i=0;i<this->size; i++){
             for(int j=0; j<this->size; j++){
-                  std::cout<<this->_MAZE[i][j]<<" ";
+                  if(i==0 or i ==this->size-1 or j==0 or j == this->size-1){
+                        std::cout<<"\x1B[7;90m \x1B[0m"<<"\x1B[7;90m \x1B[0m";
+                  }else if(this->_MAZE[i][j]=='*'){
+                        std::cout<<asterisk<<asterisk;
+                  }else if(this->_MAZE[i][j]==' '){
+                        std::cout<<space<<space;
+                  }else if(this->_MAZE[i][j]=='X'){
+                        std::cout<<targ<<space;
+                  }
+                  // std::cout<<"\x1B[7;30m  \x1B[0m";
             }
             std::cout<<std::endl;
       }

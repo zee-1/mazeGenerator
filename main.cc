@@ -3,6 +3,12 @@
 
 using Maze::MazeGen;
 
+//"\033[{FORMAT_ATTRIBUTE};{FORGROUND_COLOR};{BACKGROUND_COLOR}m{TEXT}\033[{RESET_FORMATE_ATTRIBUTE}m"
+// "Green", "32"
+// "Yellow", "33"
+// "Red", "31"
+
+
 int main(int argc, char const *argv[])
 {
       int size=21;
@@ -11,9 +17,13 @@ int main(int argc, char const *argv[])
             if((std::string)argv[i]=="--size" or argv[i]=="-s"){
                   auto arg = argv[i+1];
             #ifndef NDEBUG
-                  std::cerr<<"[LOG] Setting Size to :"<<arg;
+                  std::cerr<<"\x1B[7;32m[LOG] \x1B[0m Setting Size to :"<<arg<<std::endl;
             #endif
-                  size = atoi(arg);
+            try{
+            size = atoi(arg);
+            }catch(...){
+                  std::cout<<"[ERROR] Unexpected Error"<<std::endl;
+            }
             }
       }
 
