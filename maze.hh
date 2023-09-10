@@ -5,6 +5,9 @@
 #include <vector>
 #include <iostream>
 #include <initializer_list>
+
+//std::string LogLevel[3] = {"\x1B[7;97;32m[LOG]\x1B[0m","\x1B[7;97;33m[WARNING]\x1B[0m","\x1B[7;97;31m[ERROR]\x1B[0m"};
+
 namespace Maze
 {
       struct Position

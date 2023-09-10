@@ -1,7 +1,10 @@
 #include "maze.hh"
+#include "solver.hh"
 #include <iostream>
 
 using Maze::MazeGen;
+using SOLVER::BellmanFord;
+using SOLVER::solution;
 
 //"\033[{FORMAT_ATTRIBUTE};{FORGROUND_COLOR};{BACKGROUND_COLOR}m{TEXT}\033[{RESET_FORMATE_ATTRIBUTE}m"
 // "Green", "32"
@@ -28,14 +31,31 @@ int main(int argc, char const *argv[])
       }
 
       srand(time(0));
-      // Maze::Position p={(unsigned int)(rand()%(size-1+1)+1),(unsigned int)(rand()%(size-1+1)+1)};
-      // Maze::Position curr{0,0};
-      // Maze::Position n{0,5};
-      // MazeGen m(p,size);
       MazeGen m(size);
-
-
       m.createMaze();
       m.ShowMaze();
+
+      auto s =SOLVER::BellmanFord(m);
+
+      // for(int i=0; i<size; i++){
+      //       for( int j=0; j<size; j++){
+      //             if(s.distance[i][j]==__INT32_MAX__){
+      //                   std::cout<<"-"<<"  ";continue;
+      //             }
+      //             std::cout<<s.distance[i][j]<<" ";
+      //       }
+      //       std::cout<<std::endl;
+      // }
+
+      // for(int i=0; i<size; i++){
+      //       for( int j=0; j<size; j++){
+      //             if(s.parent[i][j]==std::pair<int,int>({-1,-1})){
+      //                   std::cout<<"-"<<"   ";continue;
+      //             }
+      //             std::cout<<s.parent[i][j].first<<','<<s.parent[i][j].second<<" ";
+      //       }
+      //       std::cout<<std::endl;
+      // }
+
       return 0;
 }

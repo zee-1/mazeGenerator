@@ -12,13 +12,13 @@ namespace SOLVER
             std::pair<int,int> **parent;
       };
       
-      solution DisjkstrasAlgo(Maze::MazeGen);
-      solution BellmanFord(Maze::MazeGen);
       class Solver{
             public:
                   Solver(Maze::MazeGen);
 
       };
+      solution DisjkstrasAlgo(Maze::MazeGen);
+      solution BellmanFord(Maze::MazeGen);
 } // namespace Solver
 
 #endif

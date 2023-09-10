@@ -6,14 +6,22 @@
 #include <exception>
 #include <initializer_list>
 
+#define log(level,message) std::cerr<<LogLevel[level-1]<<" From "<<__func__<<message<<std::endl;
 std::string LogLevel[3] = {"\x1B[7;97;32m[LOG]\x1B[0m","\x1B[7;97;33m[WARNING]\x1B[0m","\x1B[7;97;31m[ERROR]\x1B[0m"};
 
-#define log(level,message) std::cerr<<LogLevel[level-1]<<" From "<<__func__<<message<<std::endl;
 #define asterisk "\x1B[7;30m*\x1B[0m"
 #define space "\x1B[7;97m \x1B[0m"
 #define targ "\x1B[0;34mX\x1B[0m"
 using Maze::MazeGen;
 ;
+//;=================== ~MazeGen()  =================
+MazeGen::~MazeGen(){
+      for(auto i=0;i<size; i++){
+            delete[] this->_MAZE[i];
+      }
+      delete[] this->_MAZE;
+}
+
 //;=================== MazeGen(int)==================
 MazeGen::MazeGen(const unsigned int size):size(size),target({(unsigned int)(rand()%this->size+1),(unsigned int)(rand()%this->size+1)}){
 #ifndef NDEBUG
@@ -183,6 +191,17 @@ if(x==0){
 log(1,"[VERBOSE] Executed Successfully.")
 #endif
 return p;
+}
+//;====================== GetMaze()========================
+
+char** MazeGen::GetMaze(){
+      return this->_MAZE;
+}
+
+
+//;====================== GetSize()========================
+unsigned int MazeGen::GetSize(){
+      return const_cast<unsigned int&>(this->size);
 }
 
 
