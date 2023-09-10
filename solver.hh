@@ -8,8 +8,8 @@ namespace SOLVER
 {
       struct solution
       {
-            int **distance;
-            std::pair<int,int> **parent;
+            std::vector<int> distance;
+            std::vector<Maze::Position> parent;
       };
       
       class Solver{
@@ -18,7 +18,7 @@ namespace SOLVER
 
       };
       solution DisjkstrasAlgo(Maze::MazeGen);
-      solution BellmanFord(Maze::MazeGen);
+      solution BellmanFord(Maze::MazeGen,Maze::Position target);
 } // namespace Solver
 
 #endif

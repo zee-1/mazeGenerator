@@ -35,8 +35,11 @@ int main(int argc, char const *argv[])
       m.createMaze();
       m.ShowMaze();
 
-      auto s =SOLVER::BellmanFord(m);
+      auto s =SOLVER::BellmanFord(m,m.GetTarget());
 
+      for(auto i: s.parent){
+            std::cout<<i<<std::endl;
+      }
       // for(int i=0; i<size; i++){
       //       for( int j=0; j<size; j++){
       //             if(s.distance[i][j]==__INT32_MAX__){

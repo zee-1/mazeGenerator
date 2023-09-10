@@ -32,6 +32,7 @@ namespace Maze
                   void createMaze();
                   char** GetMaze();
                   unsigned int GetSize();
+                  Position GetTarget();
                   ~MazeGen();
             private:
                   const unsigned int size;
