@@ -204,8 +204,10 @@ unsigned int MazeGen::GetSize(){
       return const_cast<unsigned int&>(this->size);
 }
 
-//;====================== GetSize()========================
-
+//;====================== GetTarget()========================
+Maze::Position MazeGen::GetTarget(){
+      return this->target;
+}
 
 //;====================== MazeGen::operator[]==============
 char &MazeGen::operator[](Maze::Position p){
