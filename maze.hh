@@ -27,6 +27,9 @@ namespace Maze
                   void ShowMaze();
                   char& operator[](Position);
                   void createMaze();
+                  char** GetMaze();
+                  unsigned int GetSize();
+                  ~MazeGen();
             private:
                   const unsigned int size;
                   const Position target;
