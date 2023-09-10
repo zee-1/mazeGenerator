@@ -43,44 +43,57 @@ solution SOLVER::BellmanFord(Maze::MazeGen m,Maze::Position target){
       LOG(1," Calculating Shortest Path")
       try{
             uint32_t i,j;
-            for(i=0; i<size;i++){
-                  for(j=0; j<size; j++){
-                        if((i-1)>=0 and (j-1)>=0 and (j+1)<size and (i+1)<size){
-                              // UP
-                              if((maze[i][j]==' ' or maze[i][j]=='X') and distance[i][j]!=__INT32_MAX__ and \
-                              (maze[i][j-1]==' '  or maze[i][j-1]=='X') and \
-                              distance[i][j]+1<distance[i][j-1]){
-                                    distance[i][j-1] = distance[i][j]+1;
+            for(int32_t n=0;n<(size*size)-1;n++)
+            {      for(i=1; i<size;i++){
+                        for(j=1; j<size; j++){
+                              if((i-1)>=0 and (j-1)>=0 and (j+1)<size and (i+1)<size){
+                                    // LEFT
+                                    if((maze[i][j]==' ' or maze[i][j]=='X') and distance[i][j]!=__INT32_MAX__ and \
+                                    (maze[i][j-1]==' '  or maze[i][j-1]=='X') and \
+                                    distance[i][j]+1<distance[i][j-1]){
+                                          distance[i][j-1] = distance[i][j]+1;
+                                          parent[i][j-1] = Maze::Position(i,j);
+                                    }
+                                    //RIGHT
+                                    if((maze[i][j]==' ' or maze[i][j]=='X') and distance[i][j]!=__INT32_MAX__ and \
+                                    (maze[i][j+1]==' ' or  maze[i][j+1]=='X') and \
+                                    distance[i][j]+1<distance[i][j+1]){
+                                          distance[i][j+1] = distance[i][j]+1;
+                                          parent[i][j+1] = Maze::Position(i,j);
+                                    }      
+                                    
 
-                                    parent[i][j-1] = {i,j};
+                                    //DOWN
+                                    if((maze[i][j]==' ' or maze[i][j]=='X') and distance[i][j]!=__INT32_MAX__ and \
+                                    (maze[i+1][j]==' ' or maze[i+1][j]=='X') and \
+                                    distance[i][j]+1<distance[i+1][j]){
+                                          distance[i+1][j] = distance[i][j]+1;
+                                          parent[i+1][j] = Maze::Position(i,j);
+
+                                    }
+                                    
+                                    //UP
+                                    if((maze[i][j]==' ' or maze[i][j]=='X') and distance[i][j]!=__INT32_MAX__ and \
+                                    (maze[i-1][j]==' ' or maze[i-1][j]=='X') and \
+                                    distance[i][j]+1<distance[i-1][j]){
+                                          distance[i-1][j] = distance[i][j]+1;
+                                          parent[i-1][j] = Maze::Position(i,j);
+                                    }
+
                               }
-                              //DOWN
-                              if((maze[i][j]==' ' or maze[i][j]=='X') and distance[i][j]!=__INT32_MAX__ and \
-                              (maze[i][j+1]==' ' or  maze[i][j+1]=='X') and \
-                              distance[i][j]+1<distance[i][j+1]){
-                                    distance[i][j+1] = distance[i][j]+1;
-                                    parent[i][j+1] = {i,j};
-                              }      
-                              
-
-                              //Right
-                              if((maze[i][j]==' ' or maze[i][j]=='X') and distance[i][j]!=__INT32_MAX__ and \
-                              (maze[i+1][j]==' ' or maze[i+1][j]=='X') and \
-                              distance[i][j]+1<distance[i+1][j]){
-                                    distance[i+1][j] = distance[i][j]+1;
-                                    parent[i+1][j] = {i,j};
-
-                              }
-                              
-                              //Left
-                              if((maze[i][j]==' ' or maze[i][j]=='X') and distance[i][j]!=__INT32_MAX__ and \
-                              (maze[i-1][j]==' ' or maze[i-1][j]=='X') and \
-                              distance[i][j]+1<distance[i-1][j]){
-                                    distance[i-1][j] = distance[i][j]+1;
-                                    parent[i-1][j] = {i,j};
-                              }
-
+                        
                         }
+                  #ifndef NVERBOSE
+                        for(int i=0; i<size; i++){
+                              for(int j=0; j<size; j++){
+                                    if(parent[i][j]==Maze::Position(0,0)){
+                                          std::cout<<"-"<<"     ";continue;
+                                    }
+                                    std::cout<<parent[i][j]<<" ";
+                              }
+                              std::cout<<std::endl;
+                        }
+                  #endif
                   }
             }
       }catch(std::exception& oor){
@@ -89,6 +102,10 @@ solution SOLVER::BellmanFord(Maze::MazeGen m,Maze::Position target){
       LOG(1," Shortest Path Calculated")
       if(parent[target.x][target.y]==Maze::Position(0,0)){
             LOG(1," No path to target Found")
+            std::cout<<target<<"->Target Parents:"<<parent[target.x][target.y]<<std::endl;
+            for(int i=0; i<size; i++){
+      std::cout<<std::endl;
+}
             return solution();
             }
       LOG(1,"A test:"<<parent[target.x][target.y])
@@ -104,7 +121,6 @@ solution SOLVER::BellmanFord(Maze::MazeGen m,Maze::Position target){
 #endif
             // Distance.push_back(distance[curr.x][curr.y]);
       }
-      std::cout<<"Test:"<<curr<<parent[curr.x][curr.y]<<std::endl;
       std::reverse(PathToTarget.begin(),PathToTarget.end());
       std::reverse(Distance.begin(),Distance.end());
 #ifndef NVERBOSE
@@ -114,6 +130,7 @@ solution SOLVER::BellmanFord(Maze::MazeGen m,Maze::Position target){
       }
       std::cout<<std::endl;
       LOG(1,"[VERBOSE] Total cost:"<<distance[target.x][target.y])
+      std::cout<<"Parent Mat:"<<std::endl;
 #endif
 
 #ifdef PARENTMAT
