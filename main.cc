@@ -34,31 +34,11 @@ int main(int argc, char const *argv[])
       MazeGen m(size);
       m.createMaze();
       m.ShowMaze();
-
+      std::cout<<"Target: "<<m.GetTarget()<<std::endl;
       auto s =SOLVER::BellmanFord(m,m.GetTarget());
-
+      std::cerr<<"\x1B[7;32m[LOG]\x1B[0m Bellman Ford Executed Successfully"<<std::endl;
       for(auto i: s.parent){
             std::cout<<i<<std::endl;
       }
-      // for(int i=0; i<size; i++){
-      //       for( int j=0; j<size; j++){
-      //             if(s.distance[i][j]==__INT32_MAX__){
-      //                   std::cout<<"-"<<"  ";continue;
-      //             }
-      //             std::cout<<s.distance[i][j]<<" ";
-      //       }
-      //       std::cout<<std::endl;
-      // }
-
-      // for(int i=0; i<size; i++){
-      //       for( int j=0; j<size; j++){
-      //             if(s.parent[i][j]==std::pair<int,int>({-1,-1})){
-      //                   std::cout<<"-"<<"   ";continue;
-      //             }
-      //             std::cout<<s.parent[i][j].first<<','<<s.parent[i][j].second<<" ";
-      //       }
-      //       std::cout<<std::endl;
-      // }
-
       return 0;
 }

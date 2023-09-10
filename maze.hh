@@ -12,12 +12,12 @@ namespace Maze
 {
       struct Position
       {
-            int x,y;
+            uint32_t x,y;
             Position() = default;
             inline Position(unsigned int x,unsigned int y){this->x=x;this->y=y;};            
             bool operator==(Position p2){ return (this->x==p2.x and this->y==p2.y);};
             bool operator!=(Position p2){ return !(*this==p2);};
-            void operator=(std::initializer_list<int>& p);
+            void operator=(std::initializer_list<int32_t>& p);
       };
       
       class MazeGen{
@@ -33,7 +33,7 @@ namespace Maze
                   char** GetMaze();
                   unsigned int GetSize();
                   Position GetTarget();
-                  ~MazeGen();
+                  // ~MazeGen();
             private:
                   const unsigned int size;
                   const Position target;

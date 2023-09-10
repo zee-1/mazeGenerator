@@ -15,15 +15,15 @@ std::string LogLevel[3] = {"\x1B[7;97;32m[LOG]\x1B[0m","\x1B[7;97;33m[WARNING]\x
 using Maze::MazeGen;
 ;
 //;=================== ~MazeGen()  =================
-MazeGen::~MazeGen(){
-      for(auto i=0;i<size; i++){
-            delete[] this->_MAZE[i];
-      }
-      delete[] this->_MAZE;
-}
+// MazeGen::~MazeGen(){
+//       for(auto i=0;i<this->size; i++){
+//             delete[] _MAZE[i];
+//       }
+//       delete[] _MAZE;
+// }
 
 //;=================== MazeGen(int)==================
-MazeGen::MazeGen(const unsigned int size):size(size),target({(unsigned int)(rand()%this->size+1),(unsigned int)(rand()%this->size+1)}){
+MazeGen::MazeGen(const unsigned int size):size(size),target({(unsigned int)((rand()%this->size)+1),(unsigned int)((rand()%this->size)+1)}){
 #ifndef NDEBUG
       log(2,"Initalizing with default settings")
       log(1," initialized with Paramerters: size->"<<size<<",target->"<<target)
@@ -251,7 +251,7 @@ log(1,"[VERBOSE] From executed successfully.")
 
 //;================= Position::operator=(initializer_list<Position>&)============
 
-void Maze::Position::operator=(std::initializer_list<int>& p){
+void Maze::Position::operator=(std::initializer_list<int32_t>& p){
       std::vector<int> v;
       for(auto &i:p){
             v.push_back(i);
