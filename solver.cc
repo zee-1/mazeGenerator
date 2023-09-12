@@ -2,12 +2,16 @@
 #include "maze.hh"
 #include <exception>
 #include <algorithm>
-
+#include <queue>
 using namespace SOLVER;
 
 std::string LOGLevel[3] = {"\x1B[7;97;32m[LOG]\x1B[0m","\x1B[7;97;33m[WARNING]\x1B[0m","\x1B[7;97;31m[ERROR]\x1B[0m"};
 #define LOG(level,message) std::cerr<<LOGLevel[level-1]<<" From "<<__func__<<message<<std::endl;
 
+#define asterisk "\x1B[7;30m*\x1B[0m"
+#define space "\x1B[7;97m \x1B[0m"
+#define targ "\x1B[0;34mX\x1B[0m"
+#define path "\x1B[0;31m \x1B[0m"
 solution SOLVER::BellmanFord(Maze::MazeGen m,Maze::Position target){
       auto size = m.GetSize();
       auto maze = m.GetMaze();
@@ -156,3 +160,38 @@ for(int i=0; i<size; i++){
       LOG(1," Returned")
       return s;
 }
+
+SOLVER::Solver::Solver(Maze::MazeGen m){
+      auto maze = m.GetMaze();
+      auto size = m.GetSize();
+      auto start = Maze::Position(1,1);
+      bool **visited = new bool*[size];
+      for(int i=0; i<size; i++){
+            visited[i] = new bool[size];
+      }
+      std::queue<Maze::Position> q;
+      q.push(start);
+      while(!q.empty()){
+            auto node = q.front();
+            q.pop();
+            if(m[node]=='X') this->target=node;
+            if(visited[node.x][node.y]){
+                  continue;
+            }else{
+                  visited[node.x][node.y] = true;
+                  if(maze[node.x][node.y-1]==' '){
+                        q.push(Maze::Position(node.x,node.y-1));
+                  }else if(maze[node.x][node.y+1]==' '){
+                        q.push(Maze::Position(node.x,node.y+1));
+                  }else if(maze[node.x-1][node.y]==' '){
+                        q.push(Maze::Position(node.x-1,node.y));
+                  }else if(maze[node.x+1][node.y]==' '){
+                        q.push(Maze::Position(node.x+1,node.y));
+                  }
+            }
+      }
+      if(this->target==Maze::Position(0,0)){
+            LOG(1,"Target Not Found!")
+      }else
+            LOG(1,"Target Found at "<<this->target);
+};

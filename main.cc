@@ -34,11 +34,7 @@ int main(int argc, char const *argv[])
       MazeGen m(size);
       m.createMaze();
       m.ShowMaze();
-      auto s =SOLVER::BellmanFord(m,m.GetTarget());
       std::cerr<<"\x1B[7;32m[LOG]\x1B[0m Bellman Ford Executed Successfully"<<std::endl;
-      
-      // for(auto i: s.parent){
-      //       std::cout<<i<<std::endl;
-      // }
+      SOLVER::Solver sol(m);
       return 0;
 }

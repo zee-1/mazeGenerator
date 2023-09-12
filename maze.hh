@@ -34,6 +34,7 @@ namespace Maze
                   unsigned int GetSize();
                   Position GetTarget();
                   // ~MazeGen();
+                  MazeGen():size(0),target(Position()) {};
             private:
                   const unsigned int size;
                   const Position target;
