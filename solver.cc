@@ -205,3 +205,45 @@ void Solver::Solve(solution algo(Maze::MazeGen m,Maze::Position target)){
             this->sol = sol;
       }
 }
+
+void Solver::ShowSolution(char mode){
+      if(mode=='0'){
+            //: Path only mode
+
+            for(int i=0; i<this->sol.parent.size();i++){
+                  std::cout<<this->sol.parent[i]<<'-'<<"Cost Expanded:"<<this->sol.distance[i]<<std::endl;
+            }
+      }else if(mode=='1'){
+            for(auto i: this->sol.parent){
+                  this->maze[i]='|';
+                  {
+            #ifndef NDEBUG
+                  LOG(1," Initiated")
+            #endif
+                  auto size = this->maze.GetSize();
+                  for(int i=0;i<size; i++){
+                        for(int j=0; j<size; j++){
+                              auto pos = Maze::Position(i,j);
+                              if(i==0 or i ==size-1 or j==0 or j == this->size-1){
+                                    std::cout<<"\x1B[7;90m \x1B[0m"<<"\x1B[7;90m \x1B[0m";
+                              }else if(this->maze[pos]=='*'){
+                                    std::cout<<asterisk<<asterisk;
+                              }else if(this->maze[pos]==' '){
+                                    std::cout<<space<<space;
+                              }else if(this->maze[pos]=='X'){
+                                    std::cout<<targ<<space;
+                              }else if(this->maze[pos]=='|'){
+
+                              }
+                              // std::cout<<"\x1B[7;30m  \x1B[0m";
+                        }
+                        std::cout<<std::endl;
+                  }
+            #ifndef NDEBUG
+                  log(1," executed successfully")
+            #endif
+            }
+            }
+
+      }
+}
