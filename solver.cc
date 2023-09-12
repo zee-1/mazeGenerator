@@ -195,3 +195,13 @@ SOLVER::Solver::Solver(Maze::MazeGen m){
       }else
             LOG(1,"Target Found at "<<this->target);
 };
+
+
+void Solver::Solve(solution algo(Maze::MazeGen m,Maze::Position target)){
+      if(target==Maze::Position(0,0)){
+            LOG(1, "\x1B[0,31mTarget Unreachable!\x1B[0m")
+      }else{
+            auto sol = algo(this->maze,this->target);
+            this->sol = sol;
+      }
+}
