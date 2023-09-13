@@ -12,12 +12,13 @@ std::string LOGLevel[3] = {"\x1B[7;97;32m[LOG]\x1B[0m","\x1B[7;97;33m[WARNING]\x
 #define space "\x1B[7;97m \x1B[0m"
 #define targ "\x1B[0;34mX\x1B[0m"
 #define path "\x1B[0;31m \x1B[0m"
-solution SOLVER::BellmanFord(Maze::MazeGen m,Maze::Position target){
+solution SOLVER::BellmanFord(Maze::MazeGen &m,Maze::Position &target){
+      std::cout<<m.GetSize()<<std::endl;
       auto size = m.GetSize();
       auto maze = m.GetMaze();
       int** distance;
       Maze::Position** parent;
-      LOG(1," Allocating space for distace and ancestor matrix.")
+      LOG(1," Allocating space for distace and ancestor matrix with size:"<<size<<'x'<<size)
       try{
             distance = new int*[size];
             parent = new Maze::Position*[size];
@@ -112,7 +113,6 @@ solution SOLVER::BellmanFord(Maze::MazeGen m,Maze::Position target){
 }
             return solution();
             }
-      LOG(1,"A test:"<<parent[target.x][target.y])
       std::vector<Maze::Position> PathToTarget;
       std::vector<int> Distance;
       auto curr = target;
@@ -161,10 +161,19 @@ for(int i=0; i<size; i++){
       return s;
 }
 
-SOLVER::Solver::Solver(Maze::MazeGen m){
-      auto maze = m.GetMaze();
-      auto size = m.GetSize();
+SOLVER::Solver::Solver(Maze::MazeGen &m){
+      LOG(2," "<<m.GetSize()<<" Copying the content of the maze")
+      
+      LOG(1," Initializing Class Arttibutes")
+      // Maze::MazeGen m2;
+      // m2=m;
+      this->maze = m;
+      auto maze = this->maze.GetMaze();
+      auto size = this->maze.GetSize();
       auto start = Maze::Position(1,1);
+      this->target = Maze::Position();
+      LOG(1,"Attributes Initialized Successfully:\nsize->"<<this->maze.GetSize()<<"\nTarget-->"<<this->maze.GetTarget())
+      
       bool **visited = new bool*[size];
       for(int i=0; i<size; i++){
             visited[i] = new bool[size];
@@ -174,39 +183,48 @@ SOLVER::Solver::Solver(Maze::MazeGen m){
       while(!q.empty()){
             auto node = q.front();
             q.pop();
-            if(m[node]=='X') this->target=node;
+            
+      #ifndef NVERBOSE
+      LOG(1,"[VERBOSE] BFS currently on "<<node)
+      #endif
+            if(this->maze[node]=='X') {this->target=node;std::cout<<"---->"<<node<<std::endl; break;}
             if(visited[node.x][node.y]){
                   continue;
             }else{
                   visited[node.x][node.y] = true;
-                  if(maze[node.x][node.y-1]==' '){
+                  if(maze[node.x][node.y-1]==' ' or maze[node.x][node.y-1]=='X'){
                         q.push(Maze::Position(node.x,node.y-1));
-                  }else if(maze[node.x][node.y+1]==' '){
+                  }if(maze[node.x][node.y+1]==' ' or maze[node.x][node.y+1]=='X'){
                         q.push(Maze::Position(node.x,node.y+1));
-                  }else if(maze[node.x-1][node.y]==' '){
+                  }if(maze[node.x-1][node.y]==' ' or maze[node.x-1][node.y]=='X'){
                         q.push(Maze::Position(node.x-1,node.y));
-                  }else if(maze[node.x+1][node.y]==' '){
+                  }if(maze[node.x+1][node.y]==' ' or maze[node.x+1][node.y]=='X'){
                         q.push(Maze::Position(node.x+1,node.y));
+                  }else{
+      #ifndef NVERBOSE
+      LOG(1,"[VERBOSE] BFS currently on "<<node)
+      #endif
                   }
             }
       }
       if(this->target==Maze::Position(0,0)){
-            LOG(1,"Target Not Found!")
+            LOG(1," Target Not Found!")
       }else
-            LOG(1,"Target Found at "<<this->target);
+            LOG(1," Target Found at "<<this->target);
 };
 
 
-void Solver::Solve(solution algo(Maze::MazeGen m,Maze::Position target)){
-      if(target==Maze::Position(0,0)){
-            LOG(1, "\x1B[0,31mTarget Unreachable!\x1B[0m")
+void Solver::Solve(solution (algo)(Maze::MazeGen &m,Maze::Position &target)){
+      if(this->target==Maze::Position(0,0)){
+            LOG(1, "\x1B[0,31 mTarget Unreachable!\x1B[0m")
       }else{
             auto sol = algo(this->maze,this->target);
             this->sol = sol;
       }
 }
 
-void Solver::ShowSolution(char mode){
+void Solver::ShowSolution(char mode,char AlgoIndex){
+      LOG(1,"Initiated with Parameters: mode->"<<mode)
       if(mode=='0'){
             //: Path only mode
 
@@ -214,17 +232,32 @@ void Solver::ShowSolution(char mode){
                   std::cout<<this->sol.parent[i]<<'-'<<"Cost Expanded:"<<this->sol.distance[i]<<std::endl;
             }
       }else if(mode=='1'){
+            switch (AlgoIndex)
+            {
+            case '1':
+                  LOG(1,"Opted For BellmanFord Algorithm")
+                  this->Solve(BellmanFord); 
+                  break;
+            case '2':
+                  LOG(1,"Opted For Dijkstras Algorithm")
+                  LOG(2,"Method Not Implemeted Yet")
+                  exit(1);
+                  this->Solve(DisjkstrasAlgo); 
+                  break;
+            default:
+                  break;
+            }
             for(auto i: this->sol.parent){
                   this->maze[i]='|';
                   {
             #ifndef NDEBUG
-                  LOG(1," Initiated")
+                  LOG(1,"Process Initiated")
             #endif
                   auto size = this->maze.GetSize();
                   for(int i=0;i<size; i++){
                         for(int j=0; j<size; j++){
                               auto pos = Maze::Position(i,j);
-                              if(i==0 or i ==size-1 or j==0 or j == this->size-1){
+                              if(i==0 or i ==size-1 or j==0 or j == size-1){
                                     std::cout<<"\x1B[7;90m \x1B[0m"<<"\x1B[7;90m \x1B[0m";
                               }else if(this->maze[pos]=='*'){
                                     std::cout<<asterisk<<asterisk;
@@ -240,10 +273,15 @@ void Solver::ShowSolution(char mode){
                         std::cout<<std::endl;
                   }
             #ifndef NDEBUG
-                  log(1," executed successfully")
+                  LOG(1," executed successfully")
             #endif
             }
             }
 
       }
+      LOG(1,"Executed Successfully")
+}
+
+SOLVER::solution SOLVER::solution::operator=(SOLVER::solution& agr2){
+ return(SOLVER::solution(agr2.distance,agr2.parent));
 }

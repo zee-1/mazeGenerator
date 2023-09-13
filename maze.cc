@@ -4,7 +4,8 @@
 #include <cassert>
 #include <iostream>
 #include <exception>
-#include <initializer_list>
+// #include <initializer_list>
+#include <cstdint>
 
 #define log(level,message) std::cerr<<LogLevel[level-1]<<" From "<<__func__<<message<<std::endl;
 std::string LogLevel[3] = {"\x1B[7;97;32m[LOG]\x1B[0m","\x1B[7;97;33m[WARNING]\x1B[0m","\x1B[7;97;31m[ERROR]\x1B[0m"};
@@ -23,7 +24,7 @@ using Maze::MazeGen;
 // }
 
 //;=================== MazeGen(int)==================
-MazeGen::MazeGen(const unsigned int size):size(size),target({(unsigned int)((rand()%this->size)+1),(unsigned int)((rand()%this->size)+1)}){
+MazeGen::MazeGen(const uint64_t size):size(size),target({(uint64_t)((rand()%this->size)+1),(uint64_t)((rand()%this->size)+1)}){
 #ifndef NDEBUG
       log(2,"Initalizing with default settings")
       log(1," initialized with Paramerters: size->"<<size<<",target->"<<target)
@@ -37,7 +38,7 @@ MazeGen::MazeGen(const unsigned int size):size(size),target({(unsigned int)((ran
 
 
 //;================= MazeGen(Position,int)===========
-MazeGen::MazeGen(Maze::Position pos, const unsigned int size):size(size),target(pos){
+MazeGen::MazeGen(Maze::Position pos, const uint64_t size):size(size),target(pos){
 
 #ifndef NDEBUG
       log(1," initiated with parameters-> size:"<<this->size<<", Position ->"<<pos)
@@ -55,7 +56,6 @@ MazeGen::MazeGen(Maze::Position pos, const unsigned int size):size(size),target(
 #endif
 }
 
-
 //;================ _initMaze()===================
 void MazeGen::_initMaze(){
 #ifndef NDEBUG
@@ -72,12 +72,12 @@ void MazeGen::_initMaze(){
 #ifndef NDEBUG
       log(1," memory allocated successfully")
 #endif
-      for(unsigned int i =0; i<this->size; i++){
+      for(uint64_t i =0; i<this->size; i++){
             this->_MAZE[i] = new char[this->size];
       }
 
-      for(unsigned int i=0; i<this->size; i++){
-            for(unsigned int j=0; j<this->size; j++){
+      for(uint64_t i=0; i<this->size; i++){
+            for(uint64_t j=0; j<this->size; j++){
                   this->_MAZE[i][j]='*';
             }
       }
@@ -200,12 +200,12 @@ char** MazeGen::GetMaze(){
 
 
 //;====================== GetSize()========================
-unsigned int MazeGen::GetSize(){
-      return const_cast<unsigned int&>(this->size);
+uint64_t MazeGen::GetSize() const {
+      return const_cast<uint64_t&>(this->size);
 }
 
 //;====================== GetTarget()========================
-Maze::Position MazeGen::GetTarget(){
+Maze::Position MazeGen::GetTarget() const {
       return this->target;
 }
 
