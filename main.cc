@@ -16,9 +16,10 @@ int main(int argc, char const *argv[])
 {
       int size=21;
       char mode = '1',AlgoIndex = '1';
+      Maze::Position target;
       for(int i=0;i<argc-1;i++){
             // std::cout<<((std::string)(argv[i])=="--size")<<std::endl;
-            if((std::string)argv[i]=="--size" or argv[i]=="-s"){
+            if((std::string)argv[i]=="--size" or (std::string)argv[i]=="-s"){
                   auto arg = argv[i+1];
             #ifndef NDEBUG
                   std::cerr<<"\x1B[7;32m[LOG] \x1B[0m Setting Size to :"<<arg<<std::endl;
@@ -28,17 +29,17 @@ int main(int argc, char const *argv[])
                   }catch(...){
                         std::cout<<"[ERROR] Unexpected Error"<<std::endl;
                   }
-            }if((std::string)argv[i]=="--mode" or argv[i]=="-m"){
+            }if((std::string)argv[i]=="--mode" or (std::string)argv[i]=="-m"){
                   auto arg2 = argv[i+1];
             #ifndef NDEBUG
                   std::cerr<<"\x1B[7;32m[LOG] \x1B[0m Setting Mode to :"<<arg2<<std::endl;
             #endif
-            }if((std::string)argv[i]=="--algo" or argv[i]=="-a"){
+            }if((std::string)argv[i]=="--algo" or (std::string)argv[i]=="-a"){
                   auto arg3 = argv[i+1];
             #ifndef NDEBUG
                   std::cerr<<"\x1B[7;32m[LOG] \x1B[0m Setting AlgoIndex to :"<<arg3<<std::endl;
             #endif
-            }
+            }if((std::string)argv[i]=="--target" or (std::string)argv[i]=="-t")
       }
       srand(time(0));
       MazeGen m(size);

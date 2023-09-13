@@ -11,7 +11,10 @@ std::string LOGLevel[3] = {"\x1B[7;97;32m[LOG]\x1B[0m","\x1B[7;97;33m[WARNING]\x
 #define asterisk "\x1B[7;30m*\x1B[0m"
 #define space "\x1B[7;97m \x1B[0m"
 #define targ "\x1B[0;34mX\x1B[0m"
-#define path "\x1B[0;31m \x1B[0m"
+#define path "\x1B[7;95m \x1B[0m"
+
+
+//;===================BellmanFord(MazeGen,Position)========
 solution SOLVER::BellmanFord(Maze::MazeGen &m,Maze::Position &target){
       std::cout<<m.GetSize()<<std::endl;
       auto size = m.GetSize();
@@ -161,6 +164,8 @@ for(int i=0; i<size; i++){
       return s;
 }
 
+
+//;================Solver::Solver(MazeGen)============
 SOLVER::Solver::Solver(Maze::MazeGen &m){
       LOG(2," "<<m.GetSize()<<" Copying the content of the maze")
       
@@ -214,17 +219,29 @@ SOLVER::Solver::Solver(Maze::MazeGen &m){
 };
 
 
+//;=======Solver::Solve(solution alog(MazeGen,Position))====
 void Solver::Solve(solution (algo)(Maze::MazeGen &m,Maze::Position &target)){
       if(this->target==Maze::Position(0,0)){
             LOG(1, "\x1B[0,31 mTarget Unreachable!\x1B[0m")
       }else{
+      #ifndef NDEBUG      
+      LOG(1," Saving the Solution")
+      #endif
             auto sol = algo(this->maze,this->target);
             this->sol = sol;
+      #ifndef NDEBUG
+      LOG(1,"Solution Saved")
+      #endif
       }
 }
 
+
+//;================Solver::ShowSolution(char mode,char AlgoIndex)====
 void Solver::ShowSolution(char mode,char AlgoIndex){
       LOG(1,"Initiated with Parameters: mode->"<<mode)
+#ifndef NDEBUG
+LOG(1," Solution Size:"<<this->sol.parent.size())
+#endif
       if(mode=='0'){
             //: Path only mode
 
@@ -247,12 +264,12 @@ void Solver::ShowSolution(char mode,char AlgoIndex){
             default:
                   break;
             }
-            for(auto i: this->sol.parent){
-                  this->maze[i]='|';
-                  {
             #ifndef NDEBUG
                   LOG(1,"Process Initiated")
             #endif
+            for(auto i: this->sol.parent){
+                  this->maze[i]='|';
+            }
                   auto size = this->maze.GetSize();
                   for(int i=0;i<size; i++){
                         for(int j=0; j<size; j++){
@@ -266,7 +283,7 @@ void Solver::ShowSolution(char mode,char AlgoIndex){
                               }else if(this->maze[pos]=='X'){
                                     std::cout<<targ<<space;
                               }else if(this->maze[pos]=='|'){
-
+                                    std::cout<<path<<path;
                               }
                               // std::cout<<"\x1B[7;30m  \x1B[0m";
                         }
@@ -276,12 +293,16 @@ void Solver::ShowSolution(char mode,char AlgoIndex){
                   LOG(1," executed successfully")
             #endif
             }
-            }
 
-      }
       LOG(1,"Executed Successfully")
 }
 
-SOLVER::solution SOLVER::solution::operator=(SOLVER::solution& agr2){
- return(SOLVER::solution(agr2.distance,agr2.parent));
+//;===============solution::operator=(solution)==========
+SOLVER::solution SOLVER::solution::operator=(SOLVER::solution agr2){
+ LOG(1,"In solution")
+ std::swap(this->distance,agr2.distance);
+ std::swap(this->parent,agr2.parent);
+ LOG(1,"Assignement operator excuted successfully")
+
+ return *this;
 }

@@ -34,17 +34,15 @@ namespace Maze
                   MazeGen(const MazeGen& m)
                   :target(m.target),size((unsigned int)m.size)
                   {
-
-                        std::cout<<"Copy constructor at play"<<std::endl;
-                        std::cout<<"Size:"<<this->size<<std::endl;
-                        std::cout<<"Target"<<this->target<<std::endl;
-
+                  std::cerr<<"\x1B[7;32m [LOG] \x1B[0m"<<__func__ << "Copy Constructor Invoked"<<std::endl;
                         this->_initMaze();
                         for(int i=0; i<this->size;i++){
                               for(int j=0; j<this->size;j++){
                                     this->_MAZE[i][j] = m._MAZE[i][j];
                               }
                         }
+                  std::cerr<<"\x1B[7;32m [LOG] \x1B[0m"<<__func__ << "Copy Constructor Successfully Executed"<<std::endl;
+                  
                   };
             //:-----------------------------------
 
