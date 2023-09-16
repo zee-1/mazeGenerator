@@ -136,7 +136,7 @@ void MazeGen::createMaze(){
                   int whereToMove[4];
                   std::discrete_distribution<int> distribution {moveWeightage[0]/3,moveWeightage[1],moveWeightage[2]/3,moveWeightage[3]};
                   for(int i=0;i<4;i++)
-                  whereToMove[i] = distribution(generator);
+                        whereToMove[i] = distribution(generator);
 
                   auto newPos = findMove(curr,whereToMove[moveDecider]);
                   if(0<newPos.x and newPos.x<this->size-1 and 0<newPos.y and newPos.y<this->size-1){

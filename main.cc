@@ -47,14 +47,6 @@ int main(int argc, char const *argv[])
                   targt.x = x;
                   targt.y = y;
                   std::cerr<<"\x1B[7;32m[LOG] \x1B[0m Setting target to :"<<targt<<std::endl;
-            }else{
-                  MazeGen m(size);
-                  srand(time(0));
-                  m.createMaze();
-                  m.ShowMaze();
-      // std::cerr<<"\x1B[7;32m[LOG]\x1B[0m Bellman Ford Executed Successfully"<<std::endl;
-                  SOLVER::Solver sol(m);
-                  sol.ShowSolution(mode,AlgoIndex);
             }
       }
       if (tarFlag){
