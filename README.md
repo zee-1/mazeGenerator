@@ -1,7 +1,7 @@
 
 <span style="color:#fff; font-family: 'Bebas Neue'; font-size: 4em;">
 <h1> Maze Generator</h1>
-Maze generator is a command line software to generate a randomized maze for the given size (must be greater than 2. Once the maze is generated the Program outputs the shortest path to the target using `Bellman-Ford` [1](https://en.wikipedia.org/wiki/Bellman–Ford_algorithm) Algorithm.
+Maze generator is a command line software to generate a randomized maze for the given size (must be greater than 2. Once the maze is generated the Program outputs the shortest path to the target using `Bellman-Ford` [Link](https://en.wikipedia.org/wiki/Bellman–Ford_algorithm) Algorithm.
 
 To run the program compile the main.cc using `clang` or `gcc`
 
@@ -10,6 +10,7 @@ For gcc : `g++ main.cc maze.cc solver.cc -o maze`
 For clang : `clang++ main,cc maze.cc solver.cc -o maze`
 
 <h3> Compile time flags</h3>
+
 `-NVERBOSE` : Use it to stop verbosity of the execution.
 
 `-NDEBUG` : To stop the Log statements use this flag.
@@ -59,6 +60,8 @@ Example: ```./main -t 10 10```. Sets the target at `maze[10][10]`
 <table>
 
 <h1> Screen Shots </h1>
+![img1](./img/Screenshot_20230916_142428.png]
+![img2](./img/Screenshot_20230916_1424252.png]
 
 ![img1](./img/Screenshot_20230916_142428.png)
 
