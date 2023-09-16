@@ -60,8 +60,10 @@ Example: ```./main -t 10 10```. Sets the target at `maze[10][10]`
 <table>
 
 <h1> Screen Shots </h1>
-![img1](./img/Screenshot_20230916_142428.png]
-![img2](./img/Screenshot_20230916_1424252.png]
+
+![img1](mazeGenerator/img/Screenshot_20230916_142428.png]
+
+![img2](mazeGenerator/img/Screenshot_20230916_1424252.png]
 
 ![img1](./img/Screenshot_20230916_142428.png)
 
